@@ -19,8 +19,28 @@ library(writexl)
 source("R/simulacao_plk.R")
 ```
 
+### Função definida
+```{r,eval=FALSE}
+simula_plk<-function(media, epm){
+  epsilon <- 100
+  gamma <- 100
+  while(epsilon > 0.01 | gamma > 0.01){
+    s1 <- rnorm(20,media,epm*sqrt(4))
+    s2 <- rnorm(20,media,epm*sqrt(4))
+    s3 <- rnorm(20,media,epm*sqrt(4))
+    s4 <- rnorm(20,media,epm*sqrt(4))
+    vetor <- c(s1,s2,s3,s4)
+    epsilon = abs(media - mean(vetor))
+    gamma = abs(epm - sd(vetor)/sqrt(4))
 
-## Simulação - Tabela 01
+  }
+  return(round(vetor))
+}
+```
+
+
+
+## Simulação dos dados da Tabela 01
 
 ```{r,out.width = "80%",fig.cap="",fig.align = 'center',echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/arpanosso/help_polanczyk/master/img/tab1.png")
@@ -36,7 +56,9 @@ mortalidade_total <- c(controle,lfcc_0315,lfcc_0085,lfcc_0296)
 tratamento <- rep(c("controle","lfcc_0315","lfcc_0085","lfcc_0296"),rep(80,4))
 bloco <- rep(rep(c("I","II","III","IV"),rep(20,4)),4)
 
-tb <- tibble::tibble(tratamento, bloco, mortalidade_total)
+tb <- tibble::tibble(tratamento, bloco, mortalidade_total) |> 
+  mutate(mortalidade_total = ifelse(mortalidade_total>=0,mortalidade_total,0))
+hist(tb$mortalidade_total)
 
 tb |>
   group_by(tratamento) |>
@@ -46,8 +68,9 @@ tb |>
 write_xlsx(tb,"data/Tabela01.xlsx")
 ```
 
+##### **DOWNLOAD**: [Tabela01.xlsx](https://github.com/arpanosso/help_polanczyk/raw/master/data/Tabela01.xlsx)
 
-## Simulação - Tabela 02
+## Simulação dos dados da Tabela 02
 
 ```{r,out.width = "80%",fig.cap="",fig.align = 'center',echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/arpanosso/help_polanczyk/master/img/tab2.png")
@@ -63,7 +86,9 @@ mortalidade_total <- c(controle,lfcc_0315,lfcc_0085,lfcc_0296)
 tratamento <- rep(c("controle","lfcc_0315","lfcc_0085","lfcc_0296"),rep(80,4))
 bloco <- rep(rep(c("I","II","III","IV"),rep(20,4)),4)
 
-tb <- tibble::tibble(tratamento, bloco, mortalidade_total)
+tb <- tibble::tibble(tratamento, bloco, mortalidade_total) |> 
+  mutate(mortalidade_total = ifelse(mortalidade_total>=0,mortalidade_total,0))
+hist(tb$mortalidade_total)
 
 tb |>
   group_by(tratamento) |>
@@ -73,9 +98,9 @@ tb |>
 write_xlsx(tb,"data/Tabela02.xlsx")
 ```
 
+##### **DOWNLOAD**: [Tabela02.xlsx](https://github.com/arpanosso/help_polanczyk/raw/master/data/Tabela02.xlsx)
 
-
-## Simulação - Tabela 03
+## Simulação dos dados Tabela 03
 
 ```{r,out.width = "80%",fig.cap="",fig.align = 'center',echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/arpanosso/help_polanczyk/master/img/tab3.png")
@@ -91,7 +116,9 @@ mortalidade_total <- c(controle,lfcc_0315,lfcc_0085,lfcc_0296)
 tratamento <- rep(c("controle","lfcc_0315","lfcc_0085","lfcc_0296"),rep(80,4))
 bloco <- rep(rep(c("I","II","III","IV"),rep(20,4)),4)
 
-tb <- tibble::tibble(tratamento, bloco, mortalidade_total)
+tb <- tibble::tibble(tratamento, bloco, mortalidade_total) |> 
+    mutate(mortalidade_total = ifelse(mortalidade_total>=0,mortalidade_total,0))
+hist(tb$mortalidade_total)
 
 tb |>
   group_by(tratamento) |>
@@ -100,14 +127,13 @@ tb |>
 
 write_xlsx(tb,"data/Tabela03.xlsx")
 ```
+##### **DOWNLOAD**: [Tabela03.xlsx](https://github.com/arpanosso/help_polanczyk/raw/master/data/Tabela03.xlsx)
 
-
-## Simulação - Tabela 04
+## Simulação dos dados da Tabela 04
 
 ```{r,out.width = "80%",fig.cap="",fig.align = 'center',echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/arpanosso/help_polanczyk/master/img/tab4.png")
 ```
-
 ```{r}
 controle<-simula_plk(5.4,.5)
 lfcc_0315<-simula_plk(80.7,4.1)
@@ -118,7 +144,9 @@ mortalidade_total <- c(controle,lfcc_0315,lfcc_0085,lfcc_0296)
 tratamento <- rep(c("controle","lfcc_0315","lfcc_0085","lfcc_0296"),rep(80,4))
 bloco <- rep(rep(c("I","II","III","IV"),rep(20,4)),4)
 
-tb <- tibble::tibble(tratamento, bloco, mortalidade_total)
+tb <- tibble::tibble(tratamento, bloco, mortalidade_total) |> 
+    mutate(mortalidade_total = ifelse(mortalidade_total>=0,mortalidade_total,0))
+hist(tb$mortalidade_total)
 
 tb |>
   group_by(tratamento) |>
@@ -127,3 +155,4 @@ tb |>
 
 write_xlsx(tb,"data/Tabela04.xlsx")
 ```
+##### **DOWNLOAD**: [Tabela04.xlsx](https://github.com/arpanosso/help_polanczyk/raw/master/data/Tabela04.xlsx)
